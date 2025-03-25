@@ -4,8 +4,8 @@ from textnode import *
 from htmlnode import *
 
 def text_to_textnodes(text):
-    node = TextNode(text, TextType.TEXT)
-    bold_split_nodes = split_nodes_delimiter([node], '**', TextType.BOLD)
+    node = [TextNode(text, TextType.TEXT)[]
+    bold_split_nodes = split_nodes_delimiter(node, '**', TextType.BOLD)
     italic_split_nodes = split_nodes_delimiter(bold_split_nodes, '_', TextType.ITALIC)
     code_split_nodes = split_nodes_delimiter(italic_split_nodes, '`', TextType.CODE)
     link_split_nodes = split_nodes_link(code_split_nodes)
@@ -13,7 +13,16 @@ def text_to_textnodes(text):
     final_split_nodes = image_split_nodes
 
     return final_split_nodes
-    
+# better way to write this:    
+#def text_to_textnodes(text):
+#    nodes = [TextNode(text, TextType.TEXT)]
+#    nodes = split_nodes_delimiter(nodes, '**', TextType.BOLD)
+#    nodes = split_nodes_delimiter(nodes, '_', TextType.ITALIC)
+#    nodes = split_nodes_delimiter(nodes, '`', TextType.CODE)
+#    nodes = split_nodes_link(nodes)
+#    nodes = split_nodes_image(nodes)
+#    return nodes
+
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     text_type = process_delimiter(delimiter) #find text_type variable with helper function
@@ -114,13 +123,4 @@ def split_nodes_link(old_nodes):
             
     return new_nodes
     
-def text_to_textnodes(text):
-    node = TextNode(text, TextType.TEXT)
-    bold_split_nodes = split_nodes_delimiter([node], '**', TextType.BOLD)
-    italic_split_nodes = split_nodes_delimiter(bold_split_nodes, '_', TextType.ITALIC)
-    code_split_nodes = split_nodes_delimiter(italic_split_nodes, '`', TextType.CODE)
-    link_split_nodes = split_nodes_link(code_split_nodes)
-    image_split_nodes = split_nodes_image(link_split_nodes)
-    final_split_nodes = image_split_nodes
 
-    return final_split_nodes
