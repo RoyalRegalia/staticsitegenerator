@@ -4,7 +4,7 @@ from textnode import *
 from htmlnode import *
 
 def text_to_textnodes(text):
-    node = [TextNode(text, TextType.TEXT)[]
+    node = [TextNode(text, TextType.TEXT)]
     bold_split_nodes = split_nodes_delimiter(node, '**', TextType.BOLD)
     italic_split_nodes = split_nodes_delimiter(bold_split_nodes, '_', TextType.ITALIC)
     code_split_nodes = split_nodes_delimiter(italic_split_nodes, '`', TextType.CODE)
@@ -122,5 +122,3 @@ def split_nodes_link(old_nodes):
             new_nodes.append(node)
             
     return new_nodes
-    
-
