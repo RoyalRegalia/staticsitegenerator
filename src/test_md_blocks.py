@@ -1,4 +1,8 @@
 import unittest
+
+from textnode import *
+from htmlnode import *
+from splitdelimiter import *
 from md_blocks import *
 
 
@@ -60,6 +64,9 @@ This is the same paragraph on a new line
         block = "paragraph"
         self.assertEqual(block_to_block_type(block), BlockType.PARA)
         
+    def test_text_to_children(self):
+        htmlnodes = text_to_children("apple does not fall from the tree, _but_ there are times when that is **unfortunately** the case")
+        print(htmlnodes)
 
 if __name__ == "__main__":
     unittest.main()

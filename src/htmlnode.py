@@ -32,7 +32,7 @@ class LeafNode(HTMLNode):
             return f"{self.value}"
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>" #Parenthesis actually executes the function and gives the result, w/o parenthesis {self.props_to_html} prints the object
     
-    def __repr_(self):
+    def __repr__(self):
         #Always give yourself a method to print for debugging
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
 

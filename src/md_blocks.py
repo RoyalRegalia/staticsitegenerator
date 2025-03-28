@@ -1,5 +1,8 @@
 from enum import Enum
 
+from textnode import *
+from htmlnode import *
+from splitdelimiter import *
 #alternative version because I had formatted testing wrong, had to clean extra white space here there everywhere (curse tabbing)
 ##def markdown_to_blocks(markdown):
 #    md_block_lst = []
@@ -48,3 +51,65 @@ def block_to_block_type(block):
         return BlockType.ORDLIST
     #Default case, hence no need for else:
     return BlockType.PARA 
+
+def markdown_to_html_node(markdown):
+    blocks = markdown_to_blocks(markdown) #split markdown to blocks
+    child_nodes = []
+    html_parent = ParentNode("div", child_nodes)
+    for block in blocks:
+        block_type = block_to_block_type(block) #find the type of block
+        if block_type == BlockType.PARA:
+            children = text_to_children(block)
+            paragraph = ParentNode("p",children)
+            child_nodes.append(paragraph)
+    
+    
+    
+    return html_parent
+        
+        
+def text_to_children(text):
+    htmlnodes_lst = []
+    nodes = text_to_textnodes(text)
+    for node in nodes:
+        html_node = text_node_to_html_node(node)
+        htmlnodes_lst.append(html_node)
+
+    return htmlnodes_lst
+
+def process_heading(text):
+    stripped_text = text.lstrip("#")
+    string_diff = len(text) - len(stripped_text)
+    if 1 <= string_diff <= 6:
+
+        if text[string_diff] == " ":
+            #still need to create h1 
+            content = text[string_diff + 1:]
+            
+            return nodes
+        else:
+            raise Exception("Not a valid heading - no space after #")
+    else:
+        raise Exception("invalid number of #")
+    
+   
+        #based on the type of block, create parent HTMLnode just a <div>
+        #create a leafnode to HTMLnode
+        #assign the children to the HTMLnode
+        #text -> text_to_text_node -> text_node_to_html_node (returns leafnode)
+
+    #1. Loop over blocks, for each block find the type of block
+    #2. If block_type == "BlockType.PARA": HTMLnode(tag="p", value=None, children=None,props=None)
+    #2a. Do if statements for each blocktype and create HTMLnode based on the blocktype
+    #3. convert text to children htmlnode. Parse text using text_to_text_node(text), where text_to_text_node(text) parses inline markdown and turns into TextNode object. 
+    #4. convert TextNodes to HTML using text_node_to_html_node based on textnode.type enum and returns Leafnodes with proper format based on blocktype.
+
+    #create a new ParentNode(tag="div", child_nodes) at the top, and a new child_nodes list, 
+    #and then append new ParentNodes(p,h1,blockquote,etc) into child_nodes, and ensure each ParentNodes(p,h1,blockquote) has appropriate LeafNodes.
+    #For Code I would not parse text through text_to_textnodes and simply create a new TextNode obj holding the text.
+
+    #A helper function, if BlockType.ORDEREDLIST: f"{entiretext}". Also split entiretext to replace "- " with "".(missing wrap at the end of each line) another function for BlockType.UNORDEREDLIST where instead of <ol> it will be<ul>.
+    #Probably another create a helper function where I check for conditionals.
+    #Split blocks, then if block.startswith("#"): ParentNode.tag = "H1" ?
+    #a function where it applies text_to_textnodes to raw text, where multiple functions to parse inline markdown into textnodes has been created. Example:
+   
