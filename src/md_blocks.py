@@ -59,12 +59,54 @@ def markdown_to_html_node(markdown):
     for block in blocks:
         block_type = block_to_block_type(block) #find the type of block
         if block_type == BlockType.PARA:
+            block = block.replace("\n"," ")
             children = text_to_children(block)
-            paragraph = ParentNode("p",children)
-            child_nodes.append(paragraph)
-    
-    
-    
+            paragraph_node = ParentNode("p",children)
+            child_nodes.append(paragraph_node)
+
+        elif block_type == BlockType.HEAD:
+            heading_node = process_heading(block)
+            child_nodes.append(heading_node)
+            
+        elif block_type == BlockType.QUOTE:
+            children = text_to_children(block)
+            quote_node = ParentNode("blockquote", children)
+            child_nodes.append(quote_node)
+
+        elif block_type == BlockType.CODE:
+            content = block[4:-3]
+            code_node = TextNode(content, TextType.CODE)
+            html_code_node = text_node_to_html_node(code_node)
+            pre_code_node = ParentNode("pre", [html_code_node])
+            child_nodes.append(pre_code_node)
+
+        elif block_type == BlockType.UNORDLIST:
+            ulist_items = []
+            for line in block.split("\n"):
+                if line.strip().startswith("-"):
+                    content = line.strip()[1:].strip()
+                    if content != "":
+                        line_children = text_to_children(content)
+                        list_node = ParentNode("li",line_children)
+                        ulist_items.append(list_node)
+            ul_node = ParentNode("ul", ulist_items)
+            child_nodes.append(ul_node)
+
+        elif block_type == BlockType.ORDLIST:
+            olist_items = []
+            for line in block.split("\n"):
+                line = line.strip()
+                if line != "" and "." in line:
+                    period_index = line.index(".")
+                    if line[:period_index].isdigit():
+                        content = line[period_index + 1:].strip()
+                        if content != "":
+                            content_children = text_to_children(content)
+                            list_node = ParentNode("li",content_children)
+                            olist_items.append(list_node)
+            ol_node = ParentNode("ol", olist_items)
+            child_nodes.append(ol_node)
+
     return html_parent
         
         
@@ -83,10 +125,10 @@ def process_heading(text):
     if 1 <= string_diff <= 6:
 
         if text[string_diff] == " ":
-            #still need to create h1 
             content = text[string_diff + 1:]
-            
-            return nodes
+            nodes = text_to_children(content)
+
+            return ParentNode(f"h{string_diff}", nodes)
         else:
             raise Exception("Not a valid heading - no space after #")
     else:
