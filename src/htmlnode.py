@@ -27,9 +27,10 @@ class LeafNode(HTMLNode):
 
     def to_html(self):
         if self.value is None:
+            print(f"LeafNode with tag '{self.tag}' has no value")
             raise ValueError("must have value")
         if self.tag is None:
-            return f"{self.value}"
+            return self.value
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>" #Parenthesis actually executes the function and gives the result, w/o parenthesis {self.props_to_html} prints the object
     
     def __repr__(self):

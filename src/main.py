@@ -2,9 +2,12 @@ import os
 import shutil
 
 from copystatic import copy_directory
+from generatepage import generate_page, extract_title
 
 source_dir = './static'
 destination_dir = './public'
+content_dir = "./content"
+template_path = "./template.html"
 
 def main():
     if not os.path.exists(source_dir):
@@ -17,5 +20,12 @@ def main():
         print("Deleted existingpublic directory.")
     print(f"Copying files from {source_dir} to {destination_dir}")
     copy_directory(source_dir, destination_dir)
+
+    print("Generating page...")
+    generate_page(
+        os.path.join(content_dir, "index.md"),
+        template_path,
+        os.path.join(destination_dir, "index.html"),
+    )
 
 main()

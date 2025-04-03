@@ -69,7 +69,12 @@ def markdown_to_html_node(markdown):
             child_nodes.append(heading_node)
             
         elif block_type == BlockType.QUOTE:
-            children = text_to_children(block)
+            quote_items = []
+            for line in block.split("\n"):
+                if line.strip().startswith(">"):
+                    quote_items.append(line.strip(">").strip())
+            content = " ".join(quote_items)
+            children = text_to_children(content)
             quote_node = ParentNode("blockquote", children)
             child_nodes.append(quote_node)
 
