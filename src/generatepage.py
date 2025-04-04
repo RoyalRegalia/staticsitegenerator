@@ -31,7 +31,7 @@ def generate_page(from_path, template_path, dest_path, basepath):
 
     title = extract_title(md_file)
     new_file = template_file.replace("{{ Title }}", title).replace("{{ Content }}", content_html)
-    new_file = new_file.replace('href="/', f'href="{basepath}'.replace('src="/', f'src="{basepath}'))
+    new_file = new_file.replace('href="/', f'href="{basepath}').replace('src="/', f'src="{basepath}')
 
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
