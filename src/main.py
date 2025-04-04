@@ -1,15 +1,22 @@
 import os
 import shutil
+import sys
 
 from copystatic import copy_directory
 from generatepage import generate_pages_recursive
 
+
 source_dir = './static'
-destination_dir = './public'
+destination_dir = './docs'
 content_dir = "./content"
 template_path = "./template.html"
 
 def main():
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    else:
+        basepath = "/"
+    
     if not os.path.exists(source_dir):
         print(f"Error: The source directory '{source_dir}' does not exist.")
         return
@@ -22,6 +29,6 @@ def main():
     copy_directory(source_dir, destination_dir)
 
     print("Generating content...")
-    generate_pages_recursive(content_dir, template_path, destination_dir)
+    generate_pages_recursive(content_dir, template_path, destination_dir, basepath)
 
 main()
